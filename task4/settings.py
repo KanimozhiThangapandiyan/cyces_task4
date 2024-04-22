@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'task4.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'taskfour',
+        'NAME': 'taskfourr',
         'USER': 'postgres',
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': 'localhost',

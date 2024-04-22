@@ -12,3 +12,4 @@ class PreferencesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Preferences
         fields = ['country','industries','position','available_from','salary_expectations']
+    
