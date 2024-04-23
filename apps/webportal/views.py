@@ -20,12 +20,12 @@ class PersonalDetailsViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['post'])
     def add_user_register_details(self, request):
-        personal_serializer = PersonalDetailsSerializer(data=request.data.get('personal_details', {}))
-        educational_serializer = EducationAndCertificationsSerializer(data=request.data.get('educational_details', {}))
-        work_serializer = WorkDetailsSerializer(data=request.data.get('work_details', {}))
-        employment_history_serializer = EmploymentHistorySerializer(data=request.data.get('employment_history', {}))
-        awards_serializer = AwardsSerializer(data=request.data.get('awards_details', {}))
-        preference_serializer = PreferencesSerializer(data=request.data.get('preference_details', {}))
+        personal_serializer = PersonalDetailsSerializer(data=request.data.get('personal_details'))
+        educational_serializer = EducationAndCertificationsSerializer(data=request.data.get('education_and_certifications'))
+        work_serializer = WorkDetailsSerializer(data=request.data.get('work_details'))
+        employment_history_serializer = EmploymentHistorySerializer(data=request.data.get('employment_history'))
+        awards_serializer = AwardsSerializer(data=request.data.get('awards'))
+        preference_serializer = PreferencesSerializer(data=request.data.get('preferences'))
 
         # Validate all serializers
         validation_errors = {}
