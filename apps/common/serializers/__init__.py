@@ -1,6 +1,7 @@
 from .country_serializers import CountrySerializer
 from .state_serializers import StateSerializer
 from .degree_serializers import DegreeSerializer
+from .certification_serializer import CertificationSerializer
 from .eduandcert_serializers import EducationAndCertificationsSerializer
 from .skills_serializers import SkillsSerializer
 from .work_detail_serializers import WorkDetailsSerializer

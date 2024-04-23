@@ -4,4 +4,4 @@ from apps.common.models import State
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
         model = State
-        fields = ['id','country']
+        fields = '__all__'

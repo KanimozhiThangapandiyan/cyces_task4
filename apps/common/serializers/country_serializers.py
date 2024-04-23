@@ -4,4 +4,4 @@ from apps.common.models import Country
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = ['country_name']
+        fields = '__all__'
