@@ -4,4 +4,4 @@ from apps.common.models import Awards
 class AwardsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Awards
-        fields ='__all__'
+        fields =['award_name','awarding_organization']

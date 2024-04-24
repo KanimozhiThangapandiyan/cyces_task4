@@ -4,4 +4,4 @@ from apps.common.models import Degree
 class DegreeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Degree
-        fields = '__all__'
+        fields = ['name']

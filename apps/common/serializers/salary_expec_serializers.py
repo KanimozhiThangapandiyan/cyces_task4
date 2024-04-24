@@ -4,4 +4,4 @@ from apps.common.models import SalaryExpectation
 class SalaryExpectationSerializer(serializers.ModelSerializer):
     class Meta:
         model = SalaryExpectation
-        fields = '__all__'
+        fields = ['salary_range']

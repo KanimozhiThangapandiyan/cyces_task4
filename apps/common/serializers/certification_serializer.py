@@ -4,4 +4,4 @@ from apps.common.models import Certifications
 class CertificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certifications
-        fields = '__all__'
+        fields = ['certification_name','year_of_certification']

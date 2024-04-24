@@ -1,8 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PersonalDetailsViewSet
+from .views import SaveDataViewSet
 
-router = DefaultRouter()
-router.register(r'register', PersonalDetailsViewSet)
+# router = DefaultRouter()
+# router.register(r'register', SaveDataView)
 
-urlpatterns =[]+router.urls
+urlpatterns =[
+    path('register/', SaveDataViewSet.as_view({'post': 'create'})),
+    ]

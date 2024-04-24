@@ -14,9 +14,9 @@ class State(Base):
 
     def __str__(self):
         return f"{self.state_name}, {self.country.country_name}"
-from .eduandcert import EducationAndCertifications
-from .work_details import WorkDetails,EmploymentHistory,Awards
-from . preferences import Preferences
+# from .eduandcert import EducationAndCertifications
+# from .work_details import WorkDetails,EmploymentHistory,Awards
+# from . preferences import Preferences
 
 
 class PersonalDetails(Base):
@@ -30,21 +30,21 @@ class PersonalDetails(Base):
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     city = models.CharField(max_length=25)
 
-    education_and_certifications= models.ManyToManyField(
-        EducationAndCertifications,
-        related_name = 'personaldetails')
-    work_details=models.ManyToManyField(
-        WorkDetails,
-        related_name = 'personaldetails')
-    employment_history=models.ManyToManyField(
-        EmploymentHistory,
-        related_name = 'personaldetails')
-    awards=models.ManyToManyField(
-        Awards,
-        related_name = 'personaldetails')
-    preferences=models.ManyToManyField(
-        Preferences,
-        related_name = 'personaldetails')
+    # education_and_certifications= models.ManyToManyField(
+    #     EducationAndCertifications,
+    #     related_name = 'personaldetails')
+    # work_details=models.ManyToManyField(
+    #     WorkDetails,
+    #     related_name = 'personaldetails')
+#     # employment_history=models.ManyToManyField(
+#     #     EmploymentHistory,
+#     #     related_name = 'personaldetails')
+#     # awards=models.ManyToManyField(
+#     #     Awards,
+#     #     related_name = 'personaldetails')
+#     # preferences=models.ManyToManyField(
+#     #     Preferences,
+#     #     related_name = 'personaldetails')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
