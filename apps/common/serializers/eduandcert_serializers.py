@@ -8,13 +8,29 @@ class EducationAndCertificationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = EducationAndCertifications
         fields = ['degree','year_of_passing','school','certifications']
+    def create(self, validated_data):
+        certifications_data = validated_data.pop('certifications')
+        degrees_data = validated_data.pop('degree')
 
-        def create(self, validated_data):
-            certifications_data = validated_data.pop('certifications')
-            education_and_certifications = EducationAndCertifications.objects.create(**validated_data)
+        education_and_certifications = EducationAndCertifications.objects.create(**validated_data)
+
+        for degree_data in degrees_data:
+            degree_serializer = DegreeSerializer(data=degree_data)
+            if degree_serializer.is_valid():
+                degree_instance = degree_serializer.save()
+                education_and_certifications.degree.add(degree_instance)
+            else:
+                # Handle serializer errors if necessary
+                pass
+
+        for certification_data in certifications_data:
+            certification_serializer = CertificationSerializer(data=certification_data)
+            if certification_serializer.is_valid():
+                certification_instance = certification_serializer.save()
+                education_and_certifications.certifications.add(certification_instance)
+            else:
+                # Handle serializer errors if necessary
+                pass
+
+        return education_and_certifications
             
-            for certification_data in certifications_data:
-                Certifications.objects.create(education_and_certifications=education_and_certifications, **certification_data)
-            
-            return education_and_certifications
-        

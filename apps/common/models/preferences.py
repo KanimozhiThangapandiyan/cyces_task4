@@ -1,5 +1,5 @@
 from django.db import models
-from .personal_details import Country
+from .personal_details import Country,PersonalDetails
 from .base import Base
 
 
@@ -17,6 +17,7 @@ class SalaryExpectation(Base):
         return self.salary_range
     
 class Preferences(models.Model):
+    user_id=models.ForeignKey(PersonalDetails, on_delete=models.CASCADE,default=11)
     country = models.ForeignKey(Country, on_delete=models.CASCADE,default=1)
     industries = models.ForeignKey(Industries, on_delete=models.CASCADE)
     position = models.CharField(max_length=20)

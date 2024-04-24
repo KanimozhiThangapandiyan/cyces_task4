@@ -43,32 +43,14 @@ class SaveDataViewSet(ViewSet):
             awards_instance = awards_serializer.save()
             preferences_instance = preferences_serializer.save()
             
-            if 'skills' in work_details_data:
-                work_details_instance.skills.set(work_details_data['skills'])
-            
-            if 'certifications' in education_certifications_data:
-                certifications_data = education_certifications_data.pop('certifications')
-                for certification_data in certifications_data:
-                    certification_serializer = CertificationSerializer(data=certification_data)
-                    if certification_serializer.is_valid():
-                        certification_instance = certification_serializer.save()
-                        education_certifications_instance.certifications.add(certification_instance)
-                    else:
-                        return Response(
-                            {
-                                'error': certification_serializer.errors
-                            },
-                            status=status.HTTP_400_BAD_REQUEST
-                        )
-            
             return Response(
                 {
-                    'personal_details': personal_details_instance.data,
-                    'education_and_certifications': education_certifications_instance.data,
-                    'work_details': work_details_instance.data,
-                    'employment_history': employment_history_instance.data,
-                    'awards': awards_instance.data,
-                    'preferences': preferences_instance.data,
+                    'personal_details': personal_details_serializer.data,
+                    'education_and_certifications': education_certifications_serializer.data,
+                    'work_details': work_details_serializer.data,
+                    'employment_history': employment_history_serializer.data,
+                    'awards': awards_serializer.data,
+                    'preferences': preferences_serializer.data,
                 },
                 status=status.HTTP_201_CREATED
             )
@@ -86,6 +68,7 @@ class SaveDataViewSet(ViewSet):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
+
 
 
 # from rest_framework.generics import CreateAPIView

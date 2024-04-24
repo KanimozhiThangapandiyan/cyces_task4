@@ -1,5 +1,6 @@
 from django.db import models
 from .base import Base
+from .personal_details import PersonalDetails
 
 class Degree(Base):
     name = models.CharField(max_length=35)
@@ -15,6 +16,7 @@ class Certifications(models.Model):
         return self.certification_name
 
 class EducationAndCertifications(models.Model):
+    user_id=models.ForeignKey(PersonalDetails, on_delete=models.CASCADE,default=11)
     degree = models.ManyToManyField(Degree)
     year_of_passing = models.PositiveIntegerField()
     school = models.CharField(max_length=40)
