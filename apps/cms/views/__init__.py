@@ -3,5 +3,5 @@ from .metadata_crud import CountryViewSet,StateViewSet,DegreeViewSet,IndustriesV
 from .jobs_posting import JobPostingListCreateView,JobPostingRetrieveUpdateDeleteView
 from .superuser import ChangePasswordAPIView
 from .dashboard_view import DashBoardListView
-from .reg_user_list import RegisteredUsersListView
+from .reg_user_list import RegisteredUsersListView,UserDetailsView
 from .reg_user_export import ExportUserDataAPIView
