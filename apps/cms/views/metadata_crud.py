@@ -47,6 +47,21 @@ class DegreeListView(generics.ListAPIView):
     queryset = Degree.objects.all()
     serializer_class = DegreeListSerializer
 
+#crud for skills
+from apps.common.models import Skills
+from apps.common.serializers import SkillsSerializer
+
+class SkillsViewSet(viewsets.ModelViewSet):
+    queryset = Skills.objects.all()
+    serializer_class = SkillsSerializer
+
+
+#skillslist
+from apps.cms.serializers import SkillsListSerializer
+class SkillsListView(generics.ListAPIView):
+    queryset = Skills.objects.all()
+    serializer_class = SkillsListSerializer
+
 
 #crud for industries
 from apps.common.models import Industries

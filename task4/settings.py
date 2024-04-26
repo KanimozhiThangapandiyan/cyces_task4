@@ -139,17 +139,18 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER =config('MAIL_ID')
 EMAIL_HOST_PASSWORD =config('MAIL_PASSWORD')
 
-
+#authentication,pagination,filtering
 REST_FRAMEWORK = {
 'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination','PAGE_SIZE': 1,
 }
 
 
-#celery
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost'
-CELERY_RESULT_BACKEND = 'rpc://'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+# #celery
+# CELERY_BROKER_URL = 'amqp://guest:guest@localhost'
+# CELERY_RESULT_BACKEND = 'rpc://'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'

@@ -21,6 +21,13 @@ class DegreeListSerializer(serializers.ModelSerializer):
         model = Degree
         fields ='__all__'
 
+#skills list
+from apps.common.models import Skills
+class SkillsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skills
+        fields = '__all__'
+
 #industrieslist
 from apps.common.models import Industries
 class IndustriesListSerializer(serializers.ModelSerializer):

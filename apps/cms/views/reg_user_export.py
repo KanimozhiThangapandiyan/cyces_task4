@@ -50,7 +50,7 @@ class ExportUserDataAPIView(View):
                 rows.append({'Model': model_name, 'Field': field_name, 'Value': field_value})
 
         first_name = PersonalDetails.first_name
-        print(first_name)
+        #print(first_name)
         filename = f"{first_name}_{timezone.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
 
         # Write CSV content

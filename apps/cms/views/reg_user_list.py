@@ -15,17 +15,46 @@ class RegisteredUsersListView(generics.ListAPIView):
             'preferences_set'
         )
         return queryset
-    
-from django.views import View
-from django.http import JsonResponse
+
 from django.http import Http404
+from rest_framework import generics
+from apps.common.models import PersonalDetails, EducationAndCertifications, WorkDetails, EmploymentHistory, Awards, Preferences
 
 class UserDetailsView(generics.RetrieveAPIView):
     serializer_class = SingleUserSerializer
 
-    def get_queryset(self):
-        user_id = self.kwargs.get('user_id')
-        queryset = PersonalDetails.objects.filter(id=user_id)
-        if not queryset.exists():
+    def get_object(self):
+        personal_details_id = self.kwargs.get('id')
+
+        try:
+            # Retrieve personal details object
+            personal_details = PersonalDetails.objects.get(id=personal_details_id)
+        except PersonalDetails.DoesNotExist:
             raise Http404("User does not exist")
-        return queryset
+
+        # Retrieve related data
+        education_certifications = EducationAndCertifications.objects.filter(user_id=personal_details)
+        work_details = WorkDetails.objects.filter(user_id=personal_details)
+        employment_history = EmploymentHistory.objects.filter(user_id=personal_details)
+        awards = Awards.objects.filter(user_id=personal_details)
+        preferences = Preferences.objects.filter(user_id=personal_details)
+
+        # Construct user details dictionary
+        user_details = {
+            'id': personal_details.id,
+            'first_name': personal_details.first_name,
+            'last_name': personal_details.last_name,
+            'phone_number': personal_details.phone_number,
+            'email_id': personal_details.email_id,
+            'address': personal_details.address,
+            'country': personal_details.country,
+            'state': personal_details.state,
+            'city': personal_details.city,
+            'education_and_certifications': education_certifications,
+            'work_details': work_details,
+            'employment_history': employment_history,
+            'awards': awards,
+            'preferences': preferences
+        }
+
+        return user_details
