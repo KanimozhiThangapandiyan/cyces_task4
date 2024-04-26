@@ -1,2 +1,4 @@
 from .jobs_serializer import JobPostingSerializer,JobPostingSerializerListing
-from .dashboard_serializer import DashBoardSerializer
+from .registered_users import UsersSerializer
+from .metadata_serializers import CountryListSerializer,StateListSerializer,DegreeListSerializer,\
+    IndustriesListSerializer,SalaryExpectationListSerializer
