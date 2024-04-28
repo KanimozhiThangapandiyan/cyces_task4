@@ -17,7 +17,11 @@ class SalaryExpectation(Base):
         return self.salary_range
     
 class Preferences(models.Model):
-    user_id=models.ForeignKey(PersonalDetails, on_delete=models.CASCADE,default=11)
+    def fetch_userid():
+        user_id = PersonalDetails.objects.latest('id')
+        return user_id.id
+
+    user_id = models.ForeignKey(PersonalDetails,default=fetch_userid,related_name='preferences',on_delete=models.SET_DEFAULT)
     country = models.ForeignKey(Country, on_delete=models.CASCADE,default=1)
     industries = models.ForeignKey(Industries, on_delete=models.CASCADE)
     position = models.CharField(max_length=20)

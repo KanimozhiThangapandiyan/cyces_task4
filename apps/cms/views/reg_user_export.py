@@ -1,10 +1,13 @@
-#from celery import shared_task
-import csv
+from celery import shared_task
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib import colors
+import io
 from django.http import HttpResponse
 from django.views import View
 from django.utils import timezone
-
 from apps.common.models import PersonalDetails,EducationAndCertifications,WorkDetails,EmploymentHistory,Awards,Preferences
+
 
 class ExportUserDataAPIView(View):
     def get(self, request, *args, **kwargs):
@@ -29,37 +32,51 @@ class ExportUserDataAPIView(View):
                 *preferences
             ]
 
-            # Generate CSV content
-            response = self.generate_csv(user_data)
+            # Generate PDF content
+            pdf_content = self.generate_pdf(user_data)
+
+            filename = f"{personal_details.first_name}_{timezone.now().strftime('%Y-%m-%d_%H-%M-%S')}.pdf"
+
+            # Return PDF response
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            response.write(pdf_content)
 
             return response
         except Exception as e:
             # Handle exceptions (e.g., user not found)
             return HttpResponse("Error: " + str(e), status=400)
 
-    def generate_csv(self, data):
-        fieldnames = ['Model', 'Field', 'Value']
-        rows = []
+    def generate_pdf(self, data):
+        buffer = io.BytesIO()
+        # Create a PDF document
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        elements = []
 
-        # Iterate over each model instance and its fields
+        # Convert data to list of lists for table creation
+        table_data = [['Field', 'Value']]
+
         for model_instance in data:
-            model_name = model_instance.__class__.__name__
             for field in model_instance._meta.fields:
                 field_name = field.verbose_name.capitalize()
                 field_value = getattr(model_instance, field.attname)
-                rows.append({'Model': model_name, 'Field': field_name, 'Value': field_value})
+                table_data.append([field_name, field_value])
 
-        first_name = PersonalDetails.first_name
-        #print(first_name)
-        filename = f"{first_name}_{timezone.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+        # Create a table from data
+        table = Table(table_data)
+        table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.gray),
+                                   ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                                   ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                                   ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                                   ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                                   ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                                   ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
 
-        # Write CSV content
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        elements.append(table)
 
-        writer = csv.DictWriter(response, fieldnames=fieldnames)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
+        # Build PDF document
+        doc.build(elements)
+        pdf_content = buffer.getvalue()
+        buffer.close()
 
-        return response
+        return pdf_content

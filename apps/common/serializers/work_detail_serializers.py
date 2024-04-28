@@ -12,23 +12,21 @@ class WorkDetailsSerializer(serializers.ModelSerializer):
         fields = ['skills','total_experience']
 
     def create(self, validated_data):
-        skills_data = validated_data.pop('skills')  # Remove skills data from validated_data
+        skills_ids = validated_data.pop('skills')  # Remove skills data from validated_data
         work_details = WorkDetails.objects.create(**validated_data)  # Create WorkDetails instance
         
-        # # Create Skills instances for each skill_data
-        # for skill_data in skills_data:
-        #     # Create a new Skills instance for each skill_data
-        #     skill_instance = Skills.objects.create(**skill_data)
-        #     # Add the newly created skill_instance to the many-to-many relationship
-        #     work_details.skills.add(skill_instance)
+        for skill_id in skills_ids:
+            # Fetch the Skill object based on the ID and associate it with the work_details instance
+            skill = Skills.objects.get(id=skill_id.id)
+            work_details.skills.add(skill)
 
-        for skill_data in skills_data:
-            skills_serializer = SkillsSerializer(data=skills_data)
-            if skills_serializer.is_valid():
-                skill_instance = skills_serializer.save()
-                work_details.skills.add(skill_instance)
-            else:
-                # Handle serializer errors if necessary
-                pass
+        # for skill_data in skills_data:
+        #     skills_serializer = SkillsSerializer(data=skill_data)
+        #     if skills_serializer.is_valid():
+        #         skill_instance = skills_serializer.save()
+        #         work_details.skills.add(skill_instance)
+        #     else:
+        #         # Handle serializer errors if necessary
+        #         pass
 
         return work_details

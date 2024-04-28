@@ -3,9 +3,9 @@ from rest_framework.routers import DefaultRouter
 from .views import CountryViewSet,StateViewSet,DegreeViewSet,IndustriesViewSet,SkillsViewSet,SkillsListView,\
     SalaryExpectationViewSet,CountryListView,StateListView,DegreeListView,IndustryListView,SalaryExpectationsListView,\
         JobPostingListCreateView,JobPostingRetrieveUpdateDeleteView,ChangePasswordAPIView,\
-        DashBoardListView,RegisteredUsersListView,UserDetailsView,ExportUserDataAPIView
+        DashBoardListView,ExportUserDataAPIView,UserDetailsAPIView,AllUsersDetailsAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
-
+#RegisteredUsersListView,UserDetailsView,
 
 
 router = DefaultRouter()
@@ -27,13 +27,10 @@ urlpatterns = [
     path('job-postings/<int:pk>/', JobPostingRetrieveUpdateDeleteView.as_view(), name='job-posting-retrieve-update-delete'),
     path('password-change/', ChangePasswordAPIView.as_view(), name='password_change'),
     path('dashboard/', DashBoardListView.as_view(), name='dashboard_list'),
-    path('registered-users/', RegisteredUsersListView.as_view(), name='registered-users'),
-    path('user/<int:id>/', UserDetailsView.as_view(), name='user-details'),
+    path('user/<int:pk>/', UserDetailsAPIView.as_view(), name='user-data-list'),
+    path('registered-users/',AllUsersDetailsAPIView.as_view(), name='registered-users'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('user-export/<int:user_id>/', ExportUserDataAPIView.as_view(), name='export-user-data'),
-
-
-
 
 ]+router.urls

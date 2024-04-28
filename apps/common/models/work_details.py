@@ -10,7 +10,11 @@ class Skills(Base):
         return self.skill_name
     
 class WorkDetails(models.Model):
-    user_id=models.ForeignKey(PersonalDetails, on_delete=models.CASCADE,default=11)
+    def fetch_userid():
+        user_id = PersonalDetails.objects.latest('id')
+        return user_id.id
+
+    user_id = models.ForeignKey(PersonalDetails,default=fetch_userid,related_name='work_details',on_delete=models.SET_DEFAULT)
     skills = models.ManyToManyField(Skills)
     total_experience = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(15)]
@@ -20,7 +24,11 @@ class WorkDetails(models.Model):
         return f"Work Details: {self.total_experience} years"
     
 class EmploymentHistory(models.Model):
-    user_id=models.ForeignKey(PersonalDetails, on_delete=models.CASCADE,default=11)
+    def fetch_userid():
+        user_id = PersonalDetails.objects.latest('id')
+        return user_id.id
+
+    user_id = models.ForeignKey(PersonalDetails,default=fetch_userid,related_name='employment_history',on_delete=models.SET_DEFAULT)
     job_title = models.CharField(max_length=20)
     employer = models.CharField(max_length=25)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
@@ -33,7 +41,11 @@ class EmploymentHistory(models.Model):
         return f"{self.job_title} at {self.employer}"
     
 class Awards(models.Model):
-    user_id=models.ForeignKey(PersonalDetails, on_delete=models.CASCADE,default=11)
+    def fetch_userid():
+        user_id = PersonalDetails.objects.latest('id')
+        return user_id.id
+
+    user_id = models.ForeignKey(PersonalDetails,default=fetch_userid,related_name='awards',on_delete=models.SET_DEFAULT)
     award_name = models.CharField(max_length=25)
     awarding_organization = models.CharField(max_length=30)
 

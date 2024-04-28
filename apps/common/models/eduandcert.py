@@ -16,7 +16,11 @@ class Certifications(models.Model):
         return self.certification_name
 
 class EducationAndCertifications(models.Model):
-    user_id=models.ForeignKey(PersonalDetails, on_delete=models.CASCADE,default=11)
+    def fetch_userid():
+        user_id = PersonalDetails.objects.latest('id')
+        return user_id.id
+
+    user_id = models.ForeignKey(PersonalDetails,default=fetch_userid,related_name='education_and_certification',on_delete=models.SET_DEFAULT)
     degree = models.ManyToManyField(Degree)
     year_of_passing = models.PositiveIntegerField()
     school = models.CharField(max_length=40)

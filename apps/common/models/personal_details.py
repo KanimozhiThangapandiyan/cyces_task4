@@ -18,9 +18,10 @@ class State(Base):
 class PersonalDetails(Base):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    phone_number = models.CharField(max_length=20, unique=True, validators=[RegexValidator(regex=r'^(\+91)?[0-9]{10}$', 
-                                message='Phone number must be 10 digits with optional +91 prefix.')])
-    email_id = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=20)
+    #, unique=True, validators=[RegexValidator(regex=r'^(\+91)?[0-9]{10}$', 
+     #                           message='Phone number must be 10 digits with optional +91 prefix.')])
+    email_id = models.EmailField()
     address = models.TextField()
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     state = models.ForeignKey(State, on_delete=models.CASCADE)
