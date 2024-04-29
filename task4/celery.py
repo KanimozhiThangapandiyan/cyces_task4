@@ -1,16 +1,17 @@
+from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
+from django.conf import settings
 
-# Set the default broker URL
-broker_url = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379')
+# Set the default Django settings module for the 'celery' program.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'task4.settings')
 
-# Create the Celery app instance
-app = Celery('task4')
+app = Celery('task4')  # Replace 'your_project' with your project's name.
 
-# Configure app settings
+# Configure Celery using settings from Django settings.py.
 app.config_from_object('django.conf:settings', namespace='CELERY')
-app.autodiscover_tasks()
 
-if __name__ == '__main__':
-    app.start()
+# Load tasks from all registered Django app configs.
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
+app.conf.broker_connection_retry_on_startup = True

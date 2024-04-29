@@ -3,9 +3,9 @@ from rest_framework.routers import DefaultRouter
 from .views import CountryViewSet,StateViewSet,DegreeViewSet,IndustriesViewSet,SkillsViewSet,SkillsListView,\
     SalaryExpectationViewSet,CountryListView,StateListView,DegreeListView,IndustryListView,SalaryExpectationsListView,\
         JobPostingListCreateView,JobPostingRetrieveUpdateDeleteView,ChangePasswordAPIView,\
-        DashBoardListView,ExportUserDataAPIView,UserDetailsAPIView,AllUsersDetailsAPIView
+        DashBoardListView,UserDetailsAPIView,AllUsersDetailsAPIView,ExportUserDataAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
-#RegisteredUsersListView,UserDetailsView,
+#
 
 
 router = DefaultRouter()

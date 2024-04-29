@@ -146,11 +146,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination','PAGE_SIZE': 1,
 }
-
-
-# #celery
-# CELERY_BROKER_URL = 'amqp://guest:guest@localhost'
-# CELERY_RESULT_BACKEND = 'rpc://'
-# CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
+import os
+# Celery settings
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", 'redis://localhost:6379')
