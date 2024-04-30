@@ -11,4 +11,4 @@ apps.webportal.migrations
  !**/migrations/__init__.py
 
 __pycache__
-/__pycache__
+/__pycache__/
