@@ -33,15 +33,15 @@ def export_user_data(user_id):
 
         filename = f"{personal_details.first_name}_{timezone.now().strftime('%Y-%m-%d_%H-%M-%S')}.pdf"
 
-        # Return PDF response
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="{filename}"'
-        response.write(pdf_content)
+        # # Return PDF response
+        # response = HttpResponse(content_type='application/pdf')
+        # response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        # response.write(pdf_content)
 
-        return response
+        return pdf_content,filename
     except Exception as e:
         # Handle exceptions (e.g., user not found)
-        return HttpResponse("Error: " + str(e), status=400)
+        return None, None
 
 def generate_pdf(data, personal_details):
     buffer = io.BytesIO()
