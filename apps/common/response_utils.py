@@ -1,6 +1,4 @@
 from django.http import JsonResponse
-
-
 def success_response(data=None, message="Success"):
     response_data = {
         'success': True,
