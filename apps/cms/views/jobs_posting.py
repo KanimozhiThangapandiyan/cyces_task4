@@ -12,3 +12,4 @@ class JobPostingRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = JobPosting.objects.all()
     serializer_class = JobPostingSerializerListing
     permission_classes = [IsAuthenticated]
+    

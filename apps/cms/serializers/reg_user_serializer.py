@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from apps.common.models import PersonalDetails,EducationAndCertifications,WorkDetails,EmploymentHistory,Awards,Preferences
-
 class UserDetailsSerializer(serializers.ModelSerializer):
     education_and_certifications = serializers.SerializerMethodField()
     preferences = serializers.SerializerMethodField()

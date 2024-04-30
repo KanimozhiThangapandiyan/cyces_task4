@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework import viewsets
+from apps.common.response_utils import success_response
 
 
 #crud for country
@@ -15,6 +16,10 @@ class CountryListView(generics.ListAPIView):
     queryset = Country.objects.all()
     serializer_class = CountryListSerializer
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return success_response(data=serializer.data)
 
 
 #crud for state
@@ -31,6 +36,11 @@ class StateListView(generics.ListAPIView):
     queryset = State.objects.all()
     serializer_class = StateListSerializer
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return success_response(data=serializer.data)
+
 
 #crud for degree
 from apps.common.models import Degree
@@ -40,12 +50,16 @@ class DegreeViewSet(viewsets.ModelViewSet):
     queryset = Degree.objects.all()
     serializer_class = DegreeSerializer
 
-
 #degreelist
 from apps.cms.serializers import DegreeListSerializer
 class DegreeListView(generics.ListAPIView):
     queryset = Degree.objects.all()
     serializer_class = DegreeListSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return success_response(data=serializer.data)
 
 #crud for skills
 from apps.common.models import Skills
@@ -62,6 +76,10 @@ class SkillsListView(generics.ListAPIView):
     queryset = Skills.objects.all()
     serializer_class = SkillsListSerializer
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return success_response(data=serializer.data)
 
 #crud for industries
 from apps.common.models import Industries
@@ -76,6 +94,11 @@ class IndustryListView(generics.ListAPIView):
     queryset = Industries.objects.all()
     serializer_class = IndustriesListSerializer
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return success_response(data=serializer.data)
+
 ##crud for salary expectations
 from apps.common.models import SalaryExpectation
 from apps.common.serializers import SalaryExpectationSerializer
@@ -88,3 +111,8 @@ from apps.cms.serializers import SalaryExpectationListSerializer
 class SalaryExpectationsListView(generics.ListAPIView):
     queryset = SalaryExpectation.objects.all()
     serializer_class = SalaryExpectationListSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return success_response(data=serializer.data)
