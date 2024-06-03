@@ -150,3 +150,13 @@ import os
 # Celery settings
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://localhost:6379")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://localhost:6379")
+
+# Flower Configuration Options
+CELERY_FLOWER_OPTIONS = {
+    'address': '0.0.0.0',
+    'port': 5555,
+    'url_prefix': 'flower',
+    'persistent': True,
+    'db': 'flower',
+    'broker_api': 'http://localhost:5555/api/',
+}
