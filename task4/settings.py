@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'taskfourr',
         'USER': 'postgres',
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT':'5432'
     }
 }

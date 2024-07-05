@@ -1,0 +1,114 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: taskfourr
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  redis:
+    image: redis:6.2
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/task4
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_NAME=taskfourr
+      - DJANGO_DB_USER=postgres
+      - DJANGO_DB_PASSWORD=${DB_PASSWORD}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  celery_postman:
+    build: .
+    command: celery -A task4 worker -Q postman_queue --loglevel=info
+    volumes:
+      - .:/task4
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_NAME=taskfourr
+      - DJANGO_DB_USER=postgres
+      - DJANGO_DB_PASSWORD=${DB_PASSWORD}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  celery_periodic:
+    build: .
+    command: celery -A task4 worker -Q periodic_queue --loglevel=info
+    volumes:
+      - .:/task4
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_NAME=taskfourr
+      - DJANGO_DB_USER=postgres
+      - DJANGO_DB_PASSWORD=${DB_PASSWORD}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+  celery_bulkupload:
+    build: .
+    command: celery -A task4 worker -Q bulk_upload_queue --loglevel=info
+    volumes:
+      - .:/task4
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_NAME=taskfourr
+      - DJANGO_DB_USER=postgres
+      - DJANGO_DB_PASSWORD=${DB_PASSWORD}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  celery_beat:
+    build: .
+    command: celery -A task4 beat --loglevel=info
+    volumes:
+      - .:/task4
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_NAME=taskfourr
+      - DJANGO_DB_USER=postgres
+      - DJANGO_DB_PASSWORD=${DB_PASSWORD}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  flower:
+    build: .
+    command: celery -A task4 flower --port=5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_NAME=taskfourr
+      - DJANGO_DB_USER=postgres
+      - DJANGO_DB_PASSWORD=${DB_PASSWORD}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+volumes:
+  postgres_data:
+  
