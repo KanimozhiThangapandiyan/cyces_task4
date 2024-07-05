@@ -3,12 +3,13 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 import io
-from django.http import HttpResponse
 from django.utils import timezone
 from apps.common.models import PersonalDetails, EducationAndCertifications, WorkDetails, EmploymentHistory, Awards, Preferences
+import time
 
-@shared_task
+@shared_task(queue='postman_queue')
 def export_user_data(user_id):
+    time.sleep(10)
     try:
         # Fetch user's data from all relevant models
         personal_details = PersonalDetails.objects.get(id=user_id)
@@ -28,21 +29,31 @@ def export_user_data(user_id):
             *preferences
         ]
 
+
         # Generate PDF content
         pdf_content = generate_pdf(user_data, personal_details)
 
         filename = f"{personal_details.first_name}_{timezone.now().strftime('%Y-%m-%d_%H-%M-%S')}.pdf"
+        file_path = save_pdf_to_file(pdf_content, filename)
+        #  # Return PDF response
+        # response = HttpResponse(content_type='application/pdf')
+        # response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        # response.write(pdf_content)
+        # return response
 
-        # Return PDF response
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="{filename}"'
-        response.write(pdf_content)
 
-        return response
+        return {
+            'task_id': str(export_user_data.request.id),  # Celery task ID
+            'filename': filename,
+            'status': 'success',  # Or any other status indicators
+        }
     except Exception as e:
         # Handle exceptions (e.g., user not found)
-        return HttpResponse("Error: " + str(e), status=400)
-
+        return {
+            'task_id': str(export_user_data.request.id),
+            'status': 'error',
+            'message': str(e),
+        }
 def generate_pdf(data, personal_details):
     buffer = io.BytesIO()
     # Create a PDF document
@@ -76,3 +87,29 @@ def generate_pdf(data, personal_details):
     buffer.close()
 
     return pdf_content
+def save_pdf_to_file(pdf_content, filename):
+    file_path = f"/task4/dump.rdb/{filename}"
+    with open(file_path, 'wb') as f:
+        f.write(pdf_content)
+    return file_path
+
+
+@shared_task(queue='periodic_queue')
+def summaa():
+    s="kani"
+    return {"s": s}
+
+@shared_task(queue='bulk_upload_queue')
+def bulk_upload_task():
+    s="kani"
+    return {"s": s}
+    # try:
+    #     for row in list_of_dict:
+    #             if 'country_name' in row:
+    #                 Country.objects.update_or_create(
+    #                     country_name=row['country_name'],
+    #                 )
+    #                 count += 1
+    #                 return f"Bulk upload completed. {count} countries added."
+    # except Exception as e:
+    #     return str(e)
