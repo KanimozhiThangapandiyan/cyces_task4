@@ -4,4 +4,4 @@ from .jobs_posting import JobPostingListCreateView,JobPostingRetrieveUpdateDelet
 from .superuser import ChangePasswordAPIView
 from .dashboard_view import DashBoardListView
 from .reg_user_list import UserDetailsAPIView,AllUsersDetailsAPIView
-from .reg_user_export import ExportUserDataAPIView,summa,BulkUploadView
+from .reg_user_export import ExportUserDataAPIView
